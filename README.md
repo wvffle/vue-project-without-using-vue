@@ -9,6 +9,37 @@ The first implementation was quite simple: export all the things I want to use i
 
 It worked, but soon I realized: I can implement Vue's SFCs just like that! So I did it :) And here I am writing Vue components just like every day but in plain js :)
 
+# Supported features
+Some features are probably implemented in a completely different way and may not work 1:1 as in Vue
+
+## Reactivity
+- [x] `reactive`
+  - [x] arrays
+  - [x] objects
+  - [ ] collections
+- [x] `ref`
+- [x] `computed`
+- [x] `watchEffect`
+- [ ] `watch`
+- [x] `isRef`
+- [x] `toRaw`
+
+## SFCs
+SFCs are based on `eval` and `DOMParser` 
+- [x] template parsing
+  - [x] {{ ref }}
+  - [x] {{ object }}
+  - [x] {{ object.key }}
+- [x] `script setup` - Yeah, I used `DOMParser` even there to transform js
+- [ ] `script export`
+- [x] `v-if`, `v-else-if`, `v-else`
+- [x] `v-for`
+  - [x] `item of array` 
+  - [x] `item in array` works like `for..of`
+  - [ ] `(item, key) of array`
+  - [ ] `(item, key) of object`
+  - [ ] `:key` tracking - I'm simply re-rendering the entire list
+
 # Special thanks
 - [Evan You](https://github.com/yyx990803) - for creating Vue. I've been using it since Vue 1
 - [Vue team](https://v3.vuejs.org/community/team.html) - for your awesome work
