@@ -248,7 +248,6 @@ const parseComponent = async componentName => {
                 elements.length = 0
 
                 const obj = runEvil(context, data.array)
-                console.log(data.array, obj)
                 for (const [key, el] of Object.entries(obj).reverse()) {
                   const element = child.cloneNode(true)
                   elements.push(element)

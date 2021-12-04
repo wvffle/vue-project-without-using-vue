@@ -181,4 +181,4 @@ export const reactive = (target, shallow = false) => {
     : new Reactive(target, shallow)
 }
 
-export const isReactive = reactive => reactive instanceof Reactive
+export const isReactive = reactive => reactive instanceof Reactive || !('$target' in reactive) && !!reactive.$target
