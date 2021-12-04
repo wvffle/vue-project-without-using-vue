@@ -1,4 +1,4 @@
-import { reactive } from '../reactivity'
+import { computed, isRef, reactive, ref, watchEffect } from '../reactivity'
 import { t } from '../waff-query'
 
 const parser = new DOMParser()
@@ -65,6 +65,19 @@ const parseComponent = async componentName => {
     return context
   }
 
+  const runEvil = (context, expr) => {
+    const vars = Object.keys(context)
+      .map(key => `const ${key} = context['${key}']`)
+
+    for (const key in context) {
+      if (isRef(context[key])) {
+        expr = expr.replace(new RegExp(key, 'g'), `${key}.value`)
+      }
+    }
+
+    return eval(`(function () { \n${vars.join('\n')}\nreturn ${expr} \n})()`)
+  }
+
   const createTemplate = (globalContext) => {
     const [root] = template.content.children
 
@@ -91,9 +104,7 @@ const parseComponent = async componentName => {
                     context[value]()
                   }
                 } else {
-                  (function () {
-                    eval(`${Object.keys(context).map(k => `const ${k} = this['${k}'];`).join('\n')}\n ${value}`)
-                  }).call(context)
+                  runEvil(context, value)
                 }
               })
             }
