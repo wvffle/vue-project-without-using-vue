@@ -176,6 +176,10 @@ class ReactiveArray extends Reactive {
 }
 
 export const reactive = (target, shallow = false) => {
+  if (isReactive(target)) {
+    return target
+  }
+
   return Array.isArray(target)
     ? new ReactiveArray(target, shallow)
     : new Reactive(target, shallow)

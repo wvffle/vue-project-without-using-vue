@@ -20,8 +20,10 @@ Some features are probably implemented in a completely different way and may not
 - [x] `ref`
 - [x] `computed`
 - [x] `watchEffect`
+  - [ ] deep
 - [ ] `watch`
 - [x] `isRef`
+- [x] `isReactive`
 - [x] `toRaw`
 
 ## SFCs

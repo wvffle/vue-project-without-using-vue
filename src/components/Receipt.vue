@@ -19,7 +19,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item, i) in items" class="divide-y odd:bg-gray-50">
+            <tr v-if="items.length === 0">
+              <td class="p-4 text-center text-gray-400" colspan="6">Brak produktów na paragonie</td>
+            </tr>
+            <tr v-else v-for="(item, i) in items" class="divide-y odd:bg-gray-50">
               <td v-if="items.length > 1" class="p-4 w-5" style="cursor: grab">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M3 7a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 13a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
@@ -81,9 +84,10 @@ import { computed, reactive, toRaw, watchEffect } from '../reactivity'
 
 const today = new Date().toISOString().split('T')[0]
 
-const items = reactive([
-  { name: 'Test', quantity: 2, price: 6.66 }
-])
+const items = reactive(JSON.parse(localStorage.list ?? '[]'))
+watchEffect(() => {
+  localStorage.list = JSON.stringify([...items].map(item => ({ ...item })))
+})
 
 const sum = computed(() => items.reduce((a, b) => a + b.price * b.quantity, 0))
 
@@ -109,7 +113,4 @@ const add = () => {
   product.quantity = 1
 }
 
-watchEffect(() => {
-  console.log([...items])
-})
 </script>
