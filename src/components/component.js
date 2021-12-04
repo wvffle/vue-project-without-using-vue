@@ -1,5 +1,6 @@
-import { computed, isRef, reactive, ref, watchEffect } from '../reactivity'
+import { computed, isRef, not, reactive, ref, toRaw, watchEffect } from '../reactivity'
 import { c, t } from '../waff-query'
+import { Effect } from '../reactivity/effect'
 
 const parser = new DOMParser()
 
@@ -84,14 +85,39 @@ const parseComponent = async componentName => {
             const value = child.getAttribute(attr)
 
             /*
+             * :value
+             */
+            if (attr === ':value') {
+              child.removeAttribute(attr)
+              child.addEventListener('keydown', (event) => {
+                setTimeout(() => {
+                  runEvil(context, `(${value} = '${child.value}')`)
+                }, 1)
+              })
+
+              child.addEventListener('change', (event) => {
+                setTimeout(() => {
+                  runEvil(context, `(${value} = '${child.value}')`)
+                }, 1)
+              })
+
+              watchEffect(() => {
+                const v = runEvil(context, value)
+                if (not(v, child.value)) {
+                  child.value = v
+                }
+              })
+            }
+
+            /*
              * @<event>
              */
             if (attr.startsWith('@')) {
               child.removeAttribute(attr)
-              child.addEventListener(attr.slice(1), () => {
+              child.addEventListener(attr.slice(1), (event) => {
                 if (value in context) {
                   if (typeof context[value] === 'function') {
-                    context[value]()
+                    context[value](event)
                   }
                 } else {
                   runEvil(context, value)

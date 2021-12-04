@@ -47,6 +47,7 @@ SFCs are based on `eval` and `DOMParser`
   - [ ] `:key` tracking - I'm simply re-rendering the entire list
 - [ ] props
 - [ ] `v-bind`
+  - [x] `:value`
 
 # Special thanks
 - [Evan You](https://github.com/yyx990803) - for creating Vue. I've been using it since Vue 1
