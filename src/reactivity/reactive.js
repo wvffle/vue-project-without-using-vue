@@ -139,7 +139,7 @@ class ReactiveArray extends Reactive {
   }
 
   __hasKey (target, key) {
-    return +key < target.length
+    return +key < target.length || super.__hasKey(target, key)
   }
 
   includes (...args) {
