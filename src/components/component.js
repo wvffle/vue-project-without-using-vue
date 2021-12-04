@@ -229,4 +229,8 @@ const parseComponent = async componentName => {
   return createTemplate(await createContext())
 }
 
-export const example = () => parseComponent('Example')
+export const components = {}
+for (const [path, fn] of Object.entries(import.meta.glob('./*.vue'))) {
+  const name = path.slice(2, -4)
+  components[name] = () => parseComponent(name)
+}
