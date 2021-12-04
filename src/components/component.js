@@ -86,7 +86,15 @@ const parseComponent = async componentName => {
               const value = child.getAttribute(attr)
               child.removeAttribute(attr)
               child.addEventListener(attr.slice(1), () => {
-                context[value]()
+                if (value in context) {
+                  if (typeof context[value] === 'function') {
+                    context[value]()
+                  }
+                } else {
+                  (function () {
+                    eval(`${Object.keys(context).map(k => `const ${k} = this['${k}'];`).join('\n')}\n ${value}`)
+                  }).call(context)
+                }
               })
             }
           }
