@@ -1,0 +1,1 @@
+export const isArrayLike = obj => typeof obj === 'object' && Symbol.iterator in obj
