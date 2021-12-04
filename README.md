@@ -8,3 +8,8 @@ I couldn't simply start the project in vue as I had to do it in plain js. I've i
 The first implementation was quite simple: export all the things I want to use in the template and export the template as a string. Then I realized that writing `export` everytime I want to use something in the template is a pain in the ass. So I used eval to transform and execute the script.
 
 It worked, but soon I realized: I can implement Vue's SFCs just like that! So I did it :) And here I am writing Vue components just like every day but in plain js :)
+
+# Special thanks
+- [Evan You](https://github.com/yyx990803) - for creating Vue. I've been using it since Vue 1
+- [Vue team](https://v3.vuejs.org/community/team.html) - for your awesome work
+- [Vue Mastery](https://www.vuemastery.com) - for a great explanation of Vue 3's reactivity system
