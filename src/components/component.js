@@ -196,12 +196,21 @@ const parseComponent = async componentName => {
 
               const data = {
                 element: null,
+                key: Symbol('key'),
                 array: null
               }
 
-              value.replace(/^(\b.+\b) (?:in|of) (.+?)$/, (_, element, arr) => {
+              value.replace(/^(.+?) *(?:in|of) *(.+?)$/, (_, element, arr) => {
+
                 data.element = element
                 data.array = arr
+
+                if (/\((\b.+?\b), (\b.+?\b)\)$/.test(element)) {
+                  element.replace(/\((\b.+?\b), (\b.+?\b)\)$/, (_, element, key) => {
+                    data.element = element
+                    data.key = key
+                  })
+                }
               })
 
               const elements = []
@@ -212,10 +221,15 @@ const parseComponent = async componentName => {
 
                 elements.length = 0
 
-                for (const el of [...runEvil(context, data.array)].reverse()) {
+                for (const [key, el] of Object.entries(runEvil(context, data.array)).reverse()) {
                   const element = child.cloneNode(true)
                   elements.push(element)
-                  await traverse(element, { ...context, [data.element]: el })
+                  await traverse(element, {
+                    ...context,
+                    [data.element]: el,
+                    [data.key]: !isNaN(+key) ? +key : key
+                  })
+
                   placeholder.after(element)
                 }
               })

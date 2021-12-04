@@ -27,6 +27,7 @@ Some features are probably implemented in a completely different way and may not
 ## SFCs
 SFCs are based on `eval` and `DOMParser` 
 - [x] template parsing
+  - [x] single-root templates
   - [ ] multi-root templates
   - [x] using other components
     - [x] `<ExampleComponent />`
@@ -40,8 +41,8 @@ SFCs are based on `eval` and `DOMParser`
 - [x] `v-for`
   - [x] `item of array` 
   - [x] `item in array` works like `for..of`
-  - [ ] `(item, key) of array`
-  - [ ] `(item, key) of object`
+  - [x] `(item, key) of array`
+  - [x] `(item, key) of object`
   - [ ] left side deconstruction
   - [ ] `:key` tracking - I'm simply re-rendering the entire list
 - [ ] props
