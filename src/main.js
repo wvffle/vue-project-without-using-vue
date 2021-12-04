@@ -8,4 +8,4 @@ import './components/component'
 import { components } from './components/component'
 
 const app = q('#app')
-app.append(await components.Example())
+app.append(await components.Test())

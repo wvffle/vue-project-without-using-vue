@@ -27,6 +27,10 @@ Some features are probably implemented in a completely different way and may not
 ## SFCs
 SFCs are based on `eval` and `DOMParser` 
 - [x] template parsing
+  - [ ] multi-root templates
+  - [x] using other components
+    - [x] `<ExampleComponent />`
+    - [ ] `<example-component />`
   - [x] {{ ref }}
   - [x] {{ object }}
   - [x] {{ object.key }}
@@ -38,7 +42,10 @@ SFCs are based on `eval` and `DOMParser`
   - [x] `item in array` works like `for..of`
   - [ ] `(item, key) of array`
   - [ ] `(item, key) of object`
+  - [ ] left side deconstruction
   - [ ] `:key` tracking - I'm simply re-rendering the entire list
+- [ ] props
+- [ ] `v-bind`
 
 # Special thanks
 - [Evan You](https://github.com/yyx990803) - for creating Vue. I've been using it since Vue 1

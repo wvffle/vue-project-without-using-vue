@@ -53,10 +53,10 @@ const parseComponent = async componentName => {
     return eval(`(function () { \n${vars.join('\n')}\nreturn ${expr} \n})()`)
   }
 
-  const createTemplate = (globalContext) => {
+  const createTemplate = async (globalContext) => {
     const [root] = template.content.children
 
-    const traverse = (root, context) => {
+    const traverse = async (root, context) => {
       for (const child of root.childNodes) {
         if (child instanceof Text) {
           const text = t(() => {
@@ -73,6 +73,13 @@ const parseComponent = async componentName => {
         }
 
         if (child instanceof Element) {
+          const Component = Object.entries(components)
+            .find(([key]) => key.toUpperCase() === child.tagName)?.[1]
+
+          if (Component) {
+            child.replaceWith(await Component())
+          }
+
           for (const attr of child.getAttributeNames()) {
             const value = child.getAttribute(attr)
 
@@ -198,7 +205,7 @@ const parseComponent = async componentName => {
               })
 
               const elements = []
-              watchEffect(() => {
+              watchEffect(async () => {
                 for (const element of elements) {
                   element.remove()
                 }
@@ -208,7 +215,7 @@ const parseComponent = async componentName => {
                 for (const el of [...runEvil(context, data.array)].reverse()) {
                   const element = child.cloneNode(true)
                   elements.push(element)
-                  traverse(element, { ...context, [data.element]: el })
+                  await traverse(element, { ...context, [data.element]: el })
                   placeholder.after(element)
                 }
               })
@@ -216,13 +223,13 @@ const parseComponent = async componentName => {
           }
 
           if (!child.__removed) {
-            traverse(child, { ...context })
+            await traverse(child, { ...context })
           }
         }
       }
     }
 
-    traverse(root, globalContext)
+    await traverse(root, globalContext)
     return root
   }
 
@@ -230,7 +237,7 @@ const parseComponent = async componentName => {
 }
 
 export const components = {}
-for (const [path, fn] of Object.entries(import.meta.glob('./*.vue'))) {
+for (const path in import.meta.glob('./*.vue')) {
   const name = path.slice(2, -4)
   components[name] = () => parseComponent(name)
 }
