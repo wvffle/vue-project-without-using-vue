@@ -8,6 +8,8 @@
   },
   "devDependencies": {
     "standard": "^16.0.4",
-    "vite": "^2.6.4"
+    "vite": "^2.6.4",
+    "vite-plugin-windicss": "^1.5.4",
+    "windicss": "^3.2.1"
   }
 }

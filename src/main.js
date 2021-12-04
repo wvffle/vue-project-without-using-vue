@@ -1,14 +1,16 @@
-import { ref, computed, reactive, watchEffect, asyncComputed } from './src/reactivity'
-import { c, q } from './src/waff-query'
+import { ref, computed, reactive, watchEffect, asyncComputed } from './reactivity'
+import { c, q } from './waff-query'
 
 import './style.css'
+import 'virtual:windi.css'
+import 'virtual:windi-devtools'
 
 const counter = ref(1)
 const res = reactive({ counter: 1 })
 
 const app = q('#app')
 app.append(...[
-  c(['reactive counter: ', () => res.counter]),
+  c('text-3xl text-xs', ['reactive counter: ', () => res.counter]),
   c('button', { onclick: () => res.counter++ }, ['add']),
   c('button', { onclick: () => res.counter-- }, ['remove']),
   c('br'),

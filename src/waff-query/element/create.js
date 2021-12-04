@@ -25,7 +25,10 @@ export const c = (selector, attrs = {}, children = false) => {
 
     children = children || []
 
-    element.id = parsedSelector.id || undefined
+    if (parsedSelector.id) {
+        element.id = parsedSelector.id
+    }
+
     element.className = parsedSelector.classes.join(' ')
 
     for (const child of children) {
