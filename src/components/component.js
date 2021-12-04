@@ -47,7 +47,7 @@ const parseComponent = async componentName => {
 
     for (const key in context) {
       if (isRef(context[key])) {
-        expr = expr.replace(new RegExp(key, 'g'), `${key}.value`)
+        expr = expr.replace(new RegExp(`(\\b${key})([\\s.(])`, 'g'), `$1.value$2`)
       }
     }
 
@@ -247,7 +247,9 @@ const parseComponent = async componentName => {
 
                 elements.length = 0
 
-                for (const [key, el] of Object.entries(runEvil(context, data.array)).reverse()) {
+                const obj = runEvil(context, data.array)
+                console.log(data.array, obj)
+                for (const [key, el] of Object.entries(obj).reverse()) {
                   const element = child.cloneNode(true)
                   elements.push(element)
                   await traverse(element, {
