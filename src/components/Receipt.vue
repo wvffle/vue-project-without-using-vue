@@ -7,7 +7,7 @@
         </div>
 
         <div class="rounded-md overflow-hidden shadow">
-          <table class="w-full text-left">
+          <table class="w-full text-left select-none">
             <thead>
             <tr class="uppercase bg-gray-100 text-gray-400 font-semibold">
               <td v-if="items.length > 1" class="p-4 border-b"></td>
@@ -16,13 +16,14 @@
               <td class="p-4 border-b">Ilość</td>
               <td class="p-4 border-b text-right">Cena</td>
               <td class="p-4 border-b text-right">Suma</td>
+              <td class="p-4 border-b"></td>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y">
             <tr v-if="items.length === 0">
               <td class="p-4 text-center text-gray-400" colspan="6">Brak produktów na paragonie</td>
             </tr>
-            <tr v-else v-for="(item, i) in items" class="divide-y odd:bg-gray-50">
+            <tr v-else v-for="(item, i) in items" class="odd:bg-gray-50">
               <td v-if="items.length > 1" class="p-4 w-5" style="cursor: grab">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M3 7a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 13a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
@@ -33,6 +34,13 @@
               <td class="p-4">{{ item.quantity }}</td>
               <td class="p-4 text-right">{{ item.price.toFixed(2) }} zł</td>
               <td class="p-4 text-right">{{ (item.quantity * item.price).toFixed(2) }} zł</td>
+              <td class="p-4 w-5">
+                <div @click="active = item" class="rounded-full cursor-pointer hover:bg-gray-200 p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                  </svg>
+                </div>
+              </td>
             </tr>
             </tbody>
             <tfoot>
@@ -46,6 +54,7 @@
                   </div>
                 </div>
               </td>
+              <td></td>
             </tr>
             </tfoot>
           </table>
@@ -54,7 +63,28 @@
     </div>
 
     <div>
-      <div class="max-w-sm px-4 mx-auto">
+      <div v-if="active" class="max-w-sm px-4 mx-auto">
+        <div class="text-3xl text-center pb-8">
+          Edytuj produkt
+        </div>
+        <label class="pb-4 block">
+          <div class="text-gray-500 uppercase text-xs pb-2">Nazwa</div>
+          <input type="text" :value="edit.name" class="border-1 px-2 py-1 rounded-full text-lg block w-full">
+        </label>
+        <label class="pb-4 block">
+          <div class="text-gray-500 uppercase text-xs pb-2">Cena</div>
+          <input type="number" step="0.01" :value="edit.price" class="border-1 px-2 py-1 rounded-full text-lg block w-full">
+        </label>
+        <label class="pb-4 block">
+          <div class="text-gray-500 uppercase text-xs pb-2">Ilość</div>
+          <input type="number" :value="edit.quantity" class="border-1 px-2 py-1 rounded-full text-lg block w-full">
+        </label>
+
+        <button @click="save" class="bg-blue-400 hover:bg-blue-300 text-white uppercase text-lg block rounded shadow p-2 w-full">
+          Zapisz
+        </button>
+      </div>
+      <div v-else class="max-w-sm px-4 mx-auto">
         <div class="text-3xl text-center pb-8">
           Dodaj produkt
         </div>
@@ -80,7 +110,7 @@
 </template>
 
 <script setup>
-import { computed, reactive, toRaw, watchEffect } from '../reactivity'
+import { computed, reactive, ref, toRaw, watchEffect } from '../reactivity'
 
 const today = new Date().toISOString().split('T')[0]
 
@@ -92,7 +122,7 @@ watchEffect(() => {
 const sum = computed(() => items.reduce((a, b) => a + b.price * b.quantity, 0))
 
 const product = reactive({
-  name: 'aasd',
+  name: '',
   quantity: 1,
   price: 6.99
 })
@@ -113,4 +143,26 @@ const add = () => {
   product.quantity = 1
 }
 
+const active = ref(null)
+const edit = reactive({ name: '', price: '', quantity: 1 })
+
+watchEffect(() => {
+  if (active.value !== null) {
+    edit.name = active.value.name
+    edit.price = active.value.price
+    edit.quantity = active.value.quantity
+  }
+})
+
+const save = () => {
+  active.value.name = edit.name
+  active.value.price = +edit.price
+  active.value.quantity = +edit.quantity
+
+  edit.name = ''
+  edit.price = ''
+  edit.quantity = 1
+
+  active.value = null
+}
 </script>
