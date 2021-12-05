@@ -29,11 +29,6 @@ const parseComponent = async componentName => {
     .replace(/&lt;/g, '<')
     .replace(/&amp;/g, '&')
 
-  if (import.meta.env.DEV) {
-    console.log(evil)
-  }
-
-
   const createContext = async () => {
     const context = {}
     await eval(`(async () => {${evil}})()`)
@@ -269,7 +264,8 @@ const parseComponent = async componentName => {
       }
     }
 
-    await traverse(root, globalContext)
+    // NOTE: could add [...template.content.children] to support multi root elements
+    await traverse({ childNodes: [root] }, globalContext)
     return root
   }
 
