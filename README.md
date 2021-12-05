@@ -40,6 +40,7 @@ SFCs are based on `eval` and `DOMParser`
 - [x] `script setup` - Yeah, I used `DOMParser` even there to transform js
 - [ ] `script export`
 - [x] `v-if`, `v-else-if`, `v-else`
+  - [ ] don't evaluate expressions that are hidden
 - [x] `v-for`
   - [x] `item of array` 
   - [x] `item in array` works like `for..of`

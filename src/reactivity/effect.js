@@ -12,6 +12,10 @@ export class Effect {
   constructor (runner) {
     this.#runner = runner
     this.run()
+
+    if (import.meta.env.DEV) {
+      this.r = runner.toString()
+    }
   }
 
   track (dep) {
