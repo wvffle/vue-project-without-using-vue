@@ -23,4 +23,4 @@ class Ref {
 }
 
 export const ref = value => new Ref(value)
-export const isRef = ref => ref instanceof Ref || typeof ref === 'object' && ref.__ref === true
+export const isRef = ref => ref && (ref instanceof Ref || typeof ref === 'object' && ref.__ref === true)

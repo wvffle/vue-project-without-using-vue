@@ -1,6 +1,5 @@
-import { computed, isRef, not, reactive, ref, toRaw, watchEffect } from '../reactivity'
+import { computed, isRef, not, ref, watchEffect } from '../reactivity'
 import { c, t } from '../waff-query'
-import { Effect } from '../reactivity/effect'
 
 const parser = new DOMParser()
 
@@ -47,7 +46,7 @@ const parseComponent = async componentName => {
 
     for (const key in context) {
       if (isRef(context[key])) {
-        expr = expr.replace(new RegExp(`(\\b${key})([\\s.(])`, 'g'), `$1.value$2`)
+        expr = expr.replace(new RegExp(`(\\b${key})(?:([\\s.(])|$)`, 'g'), `$1.value$2`)
       }
     }
 
