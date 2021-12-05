@@ -74,24 +74,29 @@
 
     <div>
       <div v-if="active" class="max-w-sm px-4 mx-auto">
-        <div class="text-3xl text-center pb-8">
+        <div class="text-3xl text-center pb-8 flex justify-center items-center relative">
+          <button @click="active = null" class="hover:text-blue-400 absolute left-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+          </button>
           Edytuj produkt
         </div>
         <label class="pb-4 block">
           <div class="text-gray-500 uppercase text-xs pb-2">Nazwa</div>
-          <input type="text" :value="edit.name" class="border-1 px-2 py-1 rounded-full text-lg block w-full">
+          <input type="text" :value="edit.name" class="border-1 px-2 py-1 rounded-full text-lg block w-full outline-none">
         </label>
         <label class="pb-4 block">
           <div class="text-gray-500 uppercase text-xs pb-2">Cena</div>
-          <input type="number" step="0.01" :value="edit.price" class="border-1 px-2 py-1 rounded-full text-lg block w-full">
+          <input type="number" step="0.01" :value="edit.price" class="border-1 px-2 py-1 rounded-full text-lg block w-full outline-none">
         </label>
         <label class="pb-4 block">
           <div class="text-gray-500 uppercase text-xs pb-2">Ilość</div>
-          <input type="number" :value="edit.quantity" class="border-1 px-2 py-1 rounded-full text-lg block w-full">
+          <input type="number" :value="edit.quantity" class="border-1 px-2 py-1 rounded-full text-lg block w-full outline-none">
         </label>
 
         <div class="flex">
-          <button @click="save" class="bg-blue-400 hover:bg-blue-300 text-white uppercase text-lg block rounded shadow p-2 w-full mr-2">
+          <button :class="{ 'pointer-events-none opacity-30': !isEditValid }" @click="save" class="bg-blue-400 hover:bg-blue-300 text-white uppercase text-lg block rounded shadow p-2 w-full mx-2">
             Zapisz
           </button>
           <button @click="remove" class="bg-red-400 hover:bg-red-300 text-white uppercase text-lg block rounded shadow p-2 w-12 flex justify-center">
@@ -107,18 +112,18 @@
         </div>
         <label class="pb-4 block">
           <div class="text-gray-500 uppercase text-xs pb-2">Nazwa</div>
-          <input type="text" :value="product.name" class="border-1 px-2 py-1 rounded-full text-lg block w-full">
+          <input type="text" :value="product.name" class="border-1 px-2 py-1 rounded-full text-lg block w-full outline-none">
         </label>
         <label class="pb-4 block">
           <div class="text-gray-500 uppercase text-xs pb-2">Cena</div>
-          <input type="number" step="0.01" :value="product.price" class="border-1 px-2 py-1 rounded-full text-lg block w-full">
+          <input type="number" step="0.01" :value="product.price" class="border-1 px-2 py-1 rounded-full text-lg block w-full outline-none">
         </label>
         <label class="pb-4 block">
           <div class="text-gray-500 uppercase text-xs pb-2">Ilość</div>
-          <input type="number" :value="product.quantity" class="border-1 px-2 py-1 rounded-full text-lg block w-full">
+          <input type="number" :value="product.quantity" class="border-1 px-2 py-1 rounded-full text-lg block w-full outline-none">
         </label>
 
-        <button @click="add" class="bg-blue-400 hover:bg-blue-300 text-white uppercase text-lg block rounded shadow p-2 w-full">
+        <button @click="add" :class="{ 'pointer-events-none opacity-30': !isValid }" class="bg-blue-400 hover:bg-blue-300 text-white uppercase text-lg block rounded shadow p-2 w-full outline-none">
           Dodaj
         </button>
       </div>
@@ -217,4 +222,25 @@ const down = i => {
   const [item] = items.splice(i, 1)
   items.splice(i + 1, 0, item)
 }
+
+/**
+ * Validate
+ */
+const validate = (reactive, key) => {
+  switch (key) {
+    case 'price':
+      return !isNaN(+reactive[key]) && reactive[key] !== ''
+
+    case 'quantity':
+      return !isNaN(+reactive[key]) && +(+reactive[key]).toFixed(0) === +reactive[key] && reactive[key] !== ''
+
+    case 'name':
+      return reactive[key].trim() !== ''
+  }
+
+  return true
+}
+
+const isEditValid = computed(() => Object.keys(edit).reduce((isValid, key) => isValid && validate(edit, key) , true))
+const isValid = computed(() => Object.keys(product).reduce((isValid, key) => isValid && validate(product, key) , true))
 </script>

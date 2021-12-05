@@ -91,7 +91,11 @@ const parseComponent = async componentName => {
 
               child.addEventListener('change', (event) => {
                 setTimeout(() => {
-                  runEvil(context, `(${value} = '${child.value}')`)
+                  if (isNaN(+child.value) || child.value === '') {
+                    runEvil(context, `(${value} = '${child.value}')`)
+                  } else {
+                    runEvil(context, `(${value} = ${child.value})`)
+                  }
                 }, 1)
               })
 
@@ -109,7 +113,6 @@ const parseComponent = async componentName => {
                 child.classList.remove(...lastClasses)
 
                 const classes = runEvil(context, value)
-                console.log(classes, lastClasses)
                 if (typeof classes === 'object') {
                   for (const [className, isActive] of Object.entries(classes)) {
                     if (!isActive) continue
