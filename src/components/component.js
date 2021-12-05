@@ -109,15 +109,20 @@ const parseComponent = async componentName => {
                 child.classList.remove(...lastClasses)
 
                 const classes = runEvil(context, value)
+                console.log(classes, lastClasses)
                 if (typeof classes === 'object') {
                   for (const [className, isActive] of Object.entries(classes)) {
                     if (!isActive) continue
-                    child.classList.add(...className.split(' '))
-                    lastClasses.add(...className.split(' '))
+                    for (const clazz of className.split(' ')) {
+                      child.classList.add(clazz)
+                      lastClasses.add(clazz)
+                    }
                   }
                 } else {
-                  child.classList.add(...classes.split(' '))
-                  lastClasses.add(...classes.split(' '))
+                  for (const clazz of classes.split(' ')) {
+                    child.classList.add(clazz)
+                    lastClasses.add(clazz)
+                  }
                 }
               })
             }
