@@ -51,6 +51,8 @@ SFCs are based on `eval` and `DOMParser`
 - [ ] props
 - [ ] `v-bind`
   - [x] `:value`
+  - [x] `:class="{}"`
+  - [x] `:class=""`
 
 # Special thanks
 - [Evan You](https://github.com/yyx990803) - for creating Vue. I've been using it since Vue 1

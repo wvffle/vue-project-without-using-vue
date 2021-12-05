@@ -103,6 +103,25 @@ const parseComponent = async componentName => {
               })
             }
 
+            if (attr === ':class') {
+              const lastClasses = new Set()
+              watchEffect(() => {
+                child.classList.remove(...lastClasses)
+
+                const classes = runEvil(context, value)
+                if (typeof classes === 'object') {
+                  for (const [className, isActive] of Object.entries(classes)) {
+                    if (!isActive) continue
+                    child.classList.add(...className.split(' '))
+                    lastClasses.add(...className.split(' '))
+                  }
+                } else {
+                  child.classList.add(...classes.split(' '))
+                  lastClasses.add(...classes.split(' '))
+                }
+              })
+            }
+
             /*
              * @<event>
              */

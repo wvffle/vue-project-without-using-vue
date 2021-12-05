@@ -19,17 +19,27 @@
               <td class="p-4 border-b"></td>
             </tr>
             </thead>
-            <tbody class="divide-y">
+            <tbody class="divide-y relative">
             <tr v-if="items.length === 0">
               <td class="p-4 text-center text-gray-400" colspan="6">Brak produktów na paragonie</td>
             </tr>
             <tr v-else v-for="(item, i) in items" class="odd:bg-gray-50">
-              <td v-if="items.length > 1" class="p-4 w-5" style="cursor: grab">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M3 7a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 13a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
-                </svg>
+              <td v-if="items.length > 1" class="p-4 w-5">
+                <div class="flex flex-col">
+                  <div @click="up(i)" class="cursor-pointer hover:text-blue-400" :class="{ 'pointer-events-none opacity-0': i !== 0 }">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <div @click="down(i)" class="cursor-pointer hover:text-blue-400" :class="{ 'pointer-events-none opacity-0': i !== items.length - 1 }">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+
+                </div>
               </td>
-              <td  class="p-4">{{ i + 1 }}</td>
+              <td class="p-4">{{ i + 1 }}</td>
               <td class="p-4">{{ item.name }}</td>
               <td class="p-4">{{ item.quantity }}</td>
               <td class="p-4 text-right">{{ item.price.toFixed(2) }} zł</td>
@@ -120,14 +130,19 @@
 import { computed, reactive, ref, toRaw, watchEffect } from '../reactivity'
 
 const today = new Date().toISOString().split('T')[0]
-
 const items = reactive(JSON.parse(localStorage.list ?? '[]'))
+const sum = computed(() => items.reduce((a, b) => a + b.price * b.quantity, 0))
+
+/**
+ * Saving elements
+ */
 watchEffect(() => {
   localStorage.list = JSON.stringify([...items].map(item => ({ ...item })))
 })
 
-const sum = computed(() => items.reduce((a, b) => a + b.price * b.quantity, 0))
-
+/**
+ * Adding elements
+ */
 const product = reactive({
   name: '',
   quantity: 1,
@@ -150,6 +165,9 @@ const add = () => {
   product.quantity = 1
 }
 
+/**
+ * Editing elements
+ */
 const active = ref(null)
 const edit = reactive({ name: '', price: '', quantity: 1 })
 
@@ -173,6 +191,9 @@ const save = () => {
   active.value = null
 }
 
+/**
+ * Removing elements
+ */
 const remove = () => {
   if (confirm('Czy na pewno chcesz usunąć?')) {
     const item = active.value
@@ -180,5 +201,16 @@ const remove = () => {
 
     items.splice(items.indexOf(item), 1)
   }
+}
+
+/**
+ * Moving elements
+ */
+const up = i => {
+
+}
+
+const down = i => {
+
 }
 </script>
