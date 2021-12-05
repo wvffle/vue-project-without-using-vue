@@ -80,9 +80,16 @@
           <input type="number" :value="edit.quantity" class="border-1 px-2 py-1 rounded-full text-lg block w-full">
         </label>
 
-        <button @click="save" class="bg-blue-400 hover:bg-blue-300 text-white uppercase text-lg block rounded shadow p-2 w-full">
-          Zapisz
-        </button>
+        <div class="flex">
+          <button @click="save" class="bg-blue-400 hover:bg-blue-300 text-white uppercase text-lg block rounded shadow p-2 w-full mr-2">
+            Zapisz
+          </button>
+          <button @click="remove" class="bg-red-400 hover:bg-red-300 text-white uppercase text-lg block rounded shadow p-2 w-12 flex justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
+        </div>
       </div>
       <div v-else class="max-w-sm px-4 mx-auto">
         <div class="text-3xl text-center pb-8">
@@ -164,5 +171,14 @@ const save = () => {
   edit.quantity = 1
 
   active.value = null
+}
+
+const remove = () => {
+  if (confirm('Czy na pewno chcesz usunąć?')) {
+    const item = active.value
+    save()
+
+    items.splice(items.indexOf(item), 1)
+  }
 }
 </script>
