@@ -69,6 +69,8 @@ class Reactive {
         if (result && existed) {
           trigger(target, key)
         }
+
+        return result
       },
 
       has (target, key) {

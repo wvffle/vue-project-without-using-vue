@@ -86,7 +86,13 @@ export const trigger = (target, key) => {
     deps.push(depsMap.get(key))
 
     if (key === 'length' && Array.isArray(target)) {
-      deps.push(...[...depsMap.entries()].filter(([key, dep]) => +key >= target[key]))
+      deps.push(...[...depsMap.entries()].filter(([key, dep]) => {
+        try {
+          return +key >= target[key]
+        } catch (e) {
+          return false
+        }
+      }))
     }
   }
 
