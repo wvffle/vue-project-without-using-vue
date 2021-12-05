@@ -26,12 +26,12 @@
             <tr v-else v-for="(item, i) in items" class="odd:bg-gray-50">
               <td v-if="items.length > 1" class="p-4 w-5">
                 <div class="flex flex-col">
-                  <div @click="up(i)" class="cursor-pointer hover:text-blue-400" :class="{ 'pointer-events-none opacity-0': i !== 0 }">
+                  <div @click="up(i)" class="cursor-pointer hover:text-blue-400" :class="{ 'pointer-events-none text-gray-400': i === 0 }">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
                     </svg>
                   </div>
-                  <div @click="down(i)" class="cursor-pointer hover:text-blue-400" :class="{ 'pointer-events-none opacity-0': i !== items.length - 1 }">
+                  <div @click="down(i)" class="cursor-pointer hover:text-blue-400" :class="{ 'pointer-events-none text-gray-400': i === items.length - 1 }">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
@@ -207,10 +207,14 @@ const remove = () => {
  * Moving elements
  */
 const up = i => {
-
+  active.value = null
+  const [item] = items.splice(i, 1)
+  items.splice(i - 1, 0, item)
 }
 
 const down = i => {
-
+  active.value = null
+  const [item] = items.splice(i, 1)
+  items.splice(i + 1, 0, item)
 }
 </script>
