@@ -254,23 +254,27 @@ const parseComponent = async componentName => {
 
               const elements = []
               watchEffect(async () => {
+                const obj = runEvil(context, data.array)
+                const newElements = []
+                for (const [key, el] of Object.entries(obj).reverse()) {
+                  const element = child.cloneNode(true)
+                  newElements.push(element)
+                  await traverse(element, {
+                    ...context,
+                    [data.element]: el,
+                    [data.key]: !isNaN(+key) ? +key : key
+                  })
+                }
+
                 for (const element of elements) {
                   element.remove()
                 }
 
                 elements.length = 0
 
-                const obj = runEvil(context, data.array)
-                for (const [key, el] of Object.entries(obj).reverse()) {
-                  const element = child.cloneNode(true)
-                  elements.push(element)
-                  await traverse(element, {
-                    ...context,
-                    [data.element]: el,
-                    [data.key]: !isNaN(+key) ? +key : key
-                  })
-
+                for (const element of newElements) {
                   placeholder.after(element)
+                  elements.push(element)
                 }
               })
             }
