@@ -213,14 +213,16 @@ const remove = () => {
  */
 const up = i => {
   active.value = null
-  const [item] = items.splice(i, 1)
-  items.splice(i - 1, 0, item)
+  const item = items[i]
+  items[i] = items[i - 1]
+  items[i - 1] = item
 }
 
 const down = i => {
   active.value = null
-  const [item] = items.splice(i, 1)
-  items.splice(i + 1, 0, item)
+  const item = items[i]
+  items[i] = items[i + 1]
+  items[i + 1] = item
 }
 
 /**
