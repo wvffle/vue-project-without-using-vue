@@ -3,13 +3,8 @@ import { c, t } from '../waff-query'
 
 const parser = new DOMParser()
 
-const parseComponent = async componentName => {
-  const { head: { children: [template, script] } } = parser.parseFromString(
-    await fetch(`/src/components/${componentName}.vue`, { headers: { Accept: 'text/html' } })
-      .then(res => res.text()),
-    'text/html'
-  )
-
+const parseComponent = async ({ default: sfc }) => {
+  const { head: { children: [template, script] } } = parser.parseFromString(sfc, 'text/html')
   const body = script.innerHTML.replace(/import +(.+?) +from +(['"].+?['"])/g, "const $1 = await import($2)")
   const xmlHack = body.replace(/{/g, '<block>').replace(/}/g, '</block>')
   const { body: root } = parser.parseFromString(xmlHack, 'text/html')
@@ -304,7 +299,11 @@ const parseComponent = async componentName => {
 }
 
 export const components = {}
-for (const path in import.meta.glob('./*.vue')) {
-  const name = path.slice(2, -4)
-  components[name] = () => parseComponent(name)
+const imports = import.meta.glob('./*.vue')
+for (const path in imports) {
+    components[path.slice(2, -4)] = async () => {
+        const component = await imports[path]
+        const data = await component()
+        return parseComponent(data)
+    }
 }
