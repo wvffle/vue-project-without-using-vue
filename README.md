@@ -55,6 +55,20 @@ SFCs are based on `eval` and `DOMParser`
   - [x] `:class="{}"`
   - [x] `:class=""`
 
+# Running
+## Development
+```shell
+yarn install
+yarn dev
+```
+
+## Production
+I'm using modules, so simply opening the `dist/index.html` won't work due to the CORS. You either need to serve it through a http server or a reverse proxy. You can also run a vite server with:
+```shell
+yarn install
+yarn serve
+```
+
 # Special thanks
 - [Evan You](https://github.com/yyx990803) - for creating Vue. I've been using it since Vue 1
 - [Vue team](https://v3.vuejs.org/community/team.html) - for your awesome work
