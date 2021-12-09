@@ -1,4 +1,4 @@
-var e=`<template>
+import"./index.e3dc9f9c.js";var t=`<template>
   <div class="grid grid-cols-2">
     <div>
       <div class="max-w-2xl px-4 mx-auto">
@@ -23,7 +23,7 @@ var e=`<template>
             <tr v-if="items.length === 0">
               <td class="p-4 text-center text-gray-400" colspan="6">Brak produkt\xF3w na paragonie</td>
             </tr>
-            <tr v-else v-for="(item, i) in items" class="odd:bg-gray-50">
+            <tr v-for="(item, i) in items" class="odd:bg-gray-50">
               <td v-if="items.length > 1" class="p-4 w-5">
                 <div class="flex flex-col">
                   <div @click="up(i)" class="cursor-pointer hover:text-blue-400" :class="{ 'pointer-events-none text-gray-400': i === 0 }">
@@ -132,7 +132,7 @@ var e=`<template>
 </template>
 
 <script setup>
-import { computed, reactive, ref, toRaw, watchEffect } from '../reactivity'
+
 
 const today = new Date().toISOString().split('T')[0]
 const items = reactive(JSON.parse(localStorage.list ?? '[]'))
@@ -245,4 +245,4 @@ const validate = (reactive, key) => {
 
 const isEditValid = computed(() => Object.keys(edit).reduce((isValid, key) => isValid && validate(edit, key) , true))
 const isValid = computed(() => Object.keys(product).reduce((isValid, key) => isValid && validate(product, key) , true))
-<\/script>`;export{e as default};
+<\/script>`;export{t as default};

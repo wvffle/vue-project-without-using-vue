@@ -1,4 +1,4 @@
-var e=`<template>
+import"./index.e3dc9f9c.js";var n=`<template>
   <div class="flex flex-col items-center">
     <div class="pb-4">counter: {{ counter }}</div>
     <div v-if="counter < 0" class="text-red-400">negative</div>
@@ -19,7 +19,7 @@ var e=`<template>
 </template>
 
 <script setup>
-import { reactive, ref, watchEffect } from '../reactivity'
+
 
 const counter = ref(0)
 const increment = () => {
@@ -36,4 +36,4 @@ watchEffect(() => {
     value: counter.value
   })
 })
-<\/script>`;export{e as default};
+<\/script>`;export{n as default};

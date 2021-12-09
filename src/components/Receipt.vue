@@ -23,7 +23,7 @@
             <tr v-if="items.length === 0">
               <td class="p-4 text-center text-gray-400" colspan="6">Brak produktów na paragonie</td>
             </tr>
-            <tr v-else v-for="(item, i) in items" class="odd:bg-gray-50">
+            <tr v-for="(item, i) in items" class="odd:bg-gray-50">
               <td v-if="items.length > 1" class="p-4 w-5">
                 <div class="flex flex-col">
                   <div @click="up(i)" class="cursor-pointer hover:text-blue-400" :class="{ 'pointer-events-none text-gray-400': i === 0 }">
